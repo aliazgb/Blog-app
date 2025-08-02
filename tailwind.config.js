@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 
-import { fontFamily } from "tailwindcss/defaultTheme";
 import tailwindFormPlugin from "@tailwindcss/forms";
 
 function withOpacity(variableName) {
@@ -40,7 +39,7 @@ const tailwindConfig = {
           200: withOpacity("--color-secondary-200"),
           100: withOpacity("--color-secondary-100"),
           50: withOpacity("--color-secondary-50"),
-          '0': withOpacity("--color-secondary-0"), // کلید عددی تبدیل به رشته
+          0: withOpacity("--color-secondary-0"),
         },
         success: withOpacity("--color-success"),
         warning: withOpacity("--color-warning"),
@@ -51,8 +50,12 @@ const tailwindConfig = {
         padding: "1rem",
       },
       fontFamily: {
-        sans: ["var(--font-vazir)", ...fontFamily.sans],
+        inter: ["var(--font-inter)", "sans-serif"],
       },
+      container:{
+        center:true,
+        padding:"1rem"
+      }
     },
   },
   plugins: [
