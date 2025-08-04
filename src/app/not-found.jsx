@@ -16,6 +16,7 @@ function NotFound() {
             onClick={moveBack}
             className="flex items-center gap-x-2 text-secondary-500"
           >
+            
             <ArrowLeftIcon className="w-6 h-6 text-primary-900" />
             <span> Go back</span>
           </button>

@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import CategoryList from "./_component/CategoryList";
+import Spinner from "@/ui/Spinner";
 
 function layout({ children }) {
   return (
@@ -6,7 +8,9 @@ function layout({ children }) {
       <h1> Blog List </h1>
       <div className="grid grid-cols-12 gap-8">
         <div className="col-span-12 lg:col-span-4  xl:col-span-3 text-secondary-500 space-y-4">
-          <CategoryList />
+          <Suspense fallback={<Spinner/>}>
+            <CategoryList />
+          </Suspense>
         </div>
         <div className="col-span-12 lg:col-span-4 xl:col-span-9">
           {children}

@@ -1,5 +1,21 @@
+import Spinner from "@/ui/Spinner";
+import { Suspense } from "react";
+import PostList from "./_component/PostList";
+
 async function page() {
-  return <div>list of blog</div>;
+  return (
+    <div>
+      <p className="text-secondary-400 mb-4">
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Suscipit
+        similique aut iusto sunt cum, quisquam harum! Officia dolores aperiam
+        eveniet consequuntur, dolorum numquam necessitatibus sapiente nam
+        perferendis atque. Quae, unde.
+      </p>
+      <Suspense fallback={<Spinner />}>
+        <PostList />
+      </Suspense>
+    </div>
+  );
 }
 
 export default page;

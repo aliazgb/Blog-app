@@ -129,7 +129,9 @@
     border-right-color: transparent;
     animation: rotate 1s infinite linear;
   }
-
+  .aspect-video {
+    aspect-ratio: 16/9;
+  }
   @keyframes rotate {
     to {
       transform: rotate(1turn);
