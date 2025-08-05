@@ -1,7 +1,8 @@
-import { ArrowDownIcon } from "@heroicons/react/24/solid";
+import { ClockIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Author from "./Author";
 import CoverImage from "./CoverImage";
+import PostInterAction from "./PostInterAction";
 
 async function PostList() {
   await new Promise((res) => setTimeout(() => res(), 3000));
@@ -27,14 +28,16 @@ async function PostList() {
           {/*post author - ReadingTime */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center text-[10px] text-secondary-500">
-              <Cloac className="w-4 h-4 stroke-secondary-500 ml-1" />
+              <ClockIcon className="w-4 h-4 stroke-secondary-500 ml-1" />
 
               <span className="ml-1"> Read time:</span>
               <span className="ml-1 leading-3">{post.readingTime}</span>
               <span>minutes</span>
             </div>
-            <Author {...post.author} />
+
+        
           </div>
+          <PostInterAction post={post}/>
         </div>
       ))}
     </div>
