@@ -1,16 +1,26 @@
+import { getPostSlug, getPosts } from "@/services/postServices";
 import Image from "next/image";
 import NotFound from "./not-found";
 
+export async function generateMetadata({ params }) {
+  const post = await getPostSlug(params.postSlug);
+
+  return {
+    title: `${post.title}`,
+  };
+}
+
+export async function generateStaticParams() {
+  const posts = await getPosts();
+  return posts.slice(0,2).map((post) => ({ postSlug: post.slug }));
+}
+
 async function SinglePost({ params }) {
   await new Promise((res) => setTimeout(() => res(), 3000));
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/post/slug/${params.postSlug}`
-  );
-  const { data } = await res.json();
-  const { post } = data || {};
+
+  const post = await getPostSlug(params.postSlug);
 
   if (!post) return NotFound();
-
   return (
     <div className="text-secondary-600 max-w-screen-md mx-auto">
       <h1 className="text-secondary-700 text-2xl font-bold mb-8">

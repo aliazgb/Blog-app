@@ -2,7 +2,7 @@ import Spinner from "@/ui/Spinner";
 import { Suspense } from "react";
 import PostList from "../_components/PostList";
 
-async function page() {
+function page() {
   return (
     <div>
       <p className="text-secondary-400 mb-4">
