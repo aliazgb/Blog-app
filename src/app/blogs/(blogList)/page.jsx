@@ -2,6 +2,9 @@ import Spinner from "@/ui/Spinner";
 import { Suspense } from "react";
 import PostList from "../_components/PostList";
 
+
+export const revalidate = 0;
+
 function page() {
   return (
     <div>

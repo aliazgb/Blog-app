@@ -2,6 +2,8 @@ import { getPostSlug, getPosts } from "@/services/postServices";
 import Image from "next/image";
 import NotFound from "./not-found";
 
+
+
 export async function generateMetadata({ params }) {
   const post = await getPostSlug(params.postSlug);
 
@@ -12,7 +14,7 @@ export async function generateMetadata({ params }) {
 
 export async function generateStaticParams() {
   const posts = await getPosts();
-  return posts.slice(0,2).map((post) => ({ postSlug: post.slug }));
+  return posts.slice(0, 2).map((post) => ({ postSlug: post.slug }));
 }
 
 async function SinglePost({ params }) {
