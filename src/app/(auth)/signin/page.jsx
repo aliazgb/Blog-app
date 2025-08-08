@@ -1,6 +1,6 @@
 "use client";
 
-import { signupApi } from "@/services/authService";
+import { signinApi } from "@/services/authService";
 import RHFTextField from "@/ui/RHFTextField";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
@@ -10,11 +10,11 @@ import * as yup from "yup";
 
 const schema = yup
   .object({
-    name: yup.string().required("required"),
+    email: yup.string().required("required"),
   })
   .required();
 
-function Signup() {
+function Signin() {
   const {
     register,
     handleSubmit,
@@ -24,14 +24,14 @@ function Signup() {
     mode: "onTouched",
   });
 
+  const router = useRouter();
 
-const router = useRouter()
-
-  const onSubmit =async (values) => {
+  const onSubmit = async (values) => {
     try {
-      const { user, message } =await signupApi(values);
+      const { user, message } = await signinApi(values);
       toast.success(message);
-      // router.push("/profile")
+      console.log("first");
+      //   router.push("/profile")
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
@@ -39,15 +39,9 @@ const router = useRouter()
 
   return (
     <div>
-      <h1>Signup</h1>
+      <h1>login</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <RHFTextField
-          register={register}
-          label="Full Name"
-          name="name"
-          errors={errors}
-        />
-        <RHFTextField register={register} label="Email" name="email" />
+        <RHFTextField register={register} label="Email" name="email" errors={errors}/>
         <RHFTextField
           register={register}
           label="Password"
@@ -60,4 +54,4 @@ const router = useRouter()
   );
 }
 
-export default Signup;
+export default Signin;

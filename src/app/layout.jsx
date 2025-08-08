@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import "@/styles/globals.css";
+import { Toaster } from "react-hot-toast";
 export const metadata = {
   title: {
     template: "%s | Blog",
@@ -13,6 +14,7 @@ export default function RootLayout({ children }) {
       <body className="min-h-screen ">
         <Header />
         <div className="container xl:max-w-screen-xl">{children}</div>
+        <Toaster/>
       </body>
     </html>
   );
