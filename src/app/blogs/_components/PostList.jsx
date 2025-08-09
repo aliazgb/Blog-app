@@ -20,12 +20,13 @@ async function PostList() {
           key={post._id}
           className="col-span-12 sm:col-span-6 lg:col-span-4 border border-secondary-100 p-2 rounded-lg"
         >
+          <Link href={`/blogs/${post.slug}`}>
           <CoverImage {...post} />
           {/*post content */}
 
-          <Link href={`/blogs/${post.slug}`}>
+          
             <h2 className="mb-4 font-bold text-secondary-700">{post.title}</h2>
-          </Link>
+          
 
           {/*post author - ReadingTime */}
           <div className="flex items-center justify-between mb-4">
@@ -40,7 +41,9 @@ async function PostList() {
         
           </div>
           <PostInterAction post={post}/>
+          </Link>
         </div>
+        
       ))}
     </div>
   );

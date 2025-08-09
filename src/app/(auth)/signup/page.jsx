@@ -1,11 +1,13 @@
 "use client";
 
-import { signupApi } from "@/services/authService";
+import { useAuth } from "@/context/AutchContext";
+import Button from "@/ui/Button";
 import RHFTextField from "@/ui/RHFTextField";
+import SpinnerMini from "@/ui/SpinnerMini";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import * as yup from "yup";
 
 const schema = yup
@@ -24,23 +26,19 @@ function Signup() {
     mode: "onTouched",
   });
 
+  const router = useRouter();
+  const { Signup, isLoading } = useAuth();
 
-const router = useRouter()
-
-  const onSubmit =async (values) => {
-    try {
-      const { user, message } =await signupApi(values);
-      toast.success(message);
-      // router.push("/profile")
-    } catch (error) {
-      toast.error(error?.response?.data?.message);
-    }
+  const onSubmit = async (values) => {
+    await Signup(values);
   };
 
   return (
     <div>
-      <h1>Signup</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <h1 className="text-secondary-500 text-center mb-6 text-xl font-bold">
+        Signup
+      </h1>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
         <RHFTextField
           register={register}
           label="Full Name"
@@ -54,8 +52,19 @@ const router = useRouter()
           name="password"
           type="password"
         />
-        <button>Confirm</button>
+        <div className="mt-6">
+          {isLoading ? (
+            <SpinnerMini />
+          ) : (
+            <Button className="w-full" variant="primary" type="submit">
+              Confirm
+            </Button>
+          )}
+        </div>
       </form>
+      <Link href="/signin " className="text-secondary-500 mt-6 text-center">
+        Login
+      </Link>
     </div>
   );
 }

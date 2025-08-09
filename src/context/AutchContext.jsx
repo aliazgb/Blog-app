@@ -1,9 +1,12 @@
-import { signinApi } from "@/services/authService";
+"use client";
 
-const { createContext, useContext } = require("react");
+import { getUserApi, signinApi, signupApi } from "@/services/authService";
 
-const AutchContext = createContext;
-const initialContext = {
+import { createContext, useContext, useEffect, useReducer } from "react";
+import toast from "react-hot-toast";
+
+const AutchContext = createContext();
+const initialState = {
   user: null,
   isAuthenticated: false,
   isLoading: false,
@@ -11,44 +14,95 @@ const initialContext = {
 };
 
 function authReducer(state, action) {
-    switch (action.type) {
-        case value:
-            
-            break;
-    
-        default:
-            break;
-    }
+  switch (action.type) {
+    case "loading":
+      return { ...state, isLoading: true };
 
+    case "signin":
+      return { user: action.payload, isAuthenticated: true };
 
+    case "signup":
+      return { user: action.payload, isAuthenticated: true };
+
+    case "user/loaded":
+      return { user: action.payload, isAuthenticated: true };
+
+    case "rejected":
+      return { ...state, error: action.payload, isAuthenticated: false };
+  }
 }
 
 export default function AuthProvider({ children }) {
   const [{ user, isAuthenticated, isLoading, error }, dispatch] = useReducer(
     authReducer,
-    initialContext
+    initialState
   );
-  async function Signin() {
+
+  async function Signin(values) {
+    dispatch({ type: "loading" });
     try {
       const { user, message } = await signinApi(values);
+      dispatch({ type: "signin", payload: user });
       toast.success(message);
       console.log("first");
-      //   router.push("/profile")
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      const msg = error?.response?.data?.message;
+      dispatch({ type: "rejected", payload: msg });
+      toast.error(msg);
     }
   }
-  function Signup() {}
+
+  async function Signup(values) {
+    dispatch({ type: "loading" });
+    try {
+      const { user, message } = await signupApi(values);
+      dispatch({ type: "signup", payload: user });
+      toast.success(message);
+      //   router.push("/profile")
+    } catch (error) {
+      const msg = error?.response?.data?.message;
+      dispatch({ type: "rejected", payload: msg });
+      toast.error(msg);
+    }
+  }
+
+  async function getUser() {
+    dispatch({ type: "loading" });
+    try {
+      const { user } = await getUserApi();
+      dispatch({ type: "user/loaded", payload: user });
+      //   router.push("/profile")
+    } catch (error) {
+      const msg = error?.response?.data?.message;
+      dispatch({ type: "rejected", payload: msg });
+      toast.error(msg);
+    }
+  }
+
+  useEffect(() => {
+    async function fetchData() {
+      await getUser();
+    }
+    fetchData();
+  }, []);
   return (
     <AutchContext.Provider
-      value={{ user, isAuthenticated, isLoading, Signin, Signup }}
+      value={{
+        user,
+        isAuthenticated,
+        isLoading,
+        error,
+        Signin,
+        Signup,
+        getUser,
+      }}
     >
       {children}
     </AutchContext.Provider>
   );
 }
 
-function useAuth() {
+export function useAuth() {
   const context = useContext(AutchContext);
   if (context === undefined) throw new Error("not found Auth context");
   return context;
