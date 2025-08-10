@@ -1,17 +1,16 @@
+
+import { getPosts } from "@/services/postServices";
+import { setCookieOnReq } from "@/utils/setCookieOnReq";
 import { ClockIcon } from "@heroicons/react/24/outline";
+import { cookies } from "next/headers";
 import Link from "next/link";
-import Author from "./Author";
 import CoverImage from "./CoverImage";
 import PostInterAction from "./PostInterAction";
 
-
-
 async function PostList() {
-  // await new Promise((res) => setTimeout(() => res(), 3000));
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/post/list`);
-  const {
-    data: { posts },
-  } = await res.json();
+  const cookieStore = cookies();
+  const options = setCookieOnReq(cookieStore);
+  const posts = await getPosts(options);
 
   return (
     <div className="grid grid-cols-12 gap-8">
@@ -21,13 +20,11 @@ async function PostList() {
           className="col-span-12 sm:col-span-6 lg:col-span-4 border border-secondary-100 p-2 rounded-lg"
         >
           <Link href={`/blogs/${post.slug}`}>
-          <CoverImage {...post} />
-          {/*post content */}
+            <CoverImage {...post} />
+            {/*post content */}
 
-          
             <h2 className="mb-4 font-bold text-secondary-700">{post.title}</h2>
-          
-
+          </Link>
           {/*post author - ReadingTime */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center text-[10px] text-secondary-500">
@@ -37,13 +34,9 @@ async function PostList() {
               <span className="ml-1 leading-3">{post.readingTime}</span>
               <span>minutes</span>
             </div>
-
-        
           </div>
-          <PostInterAction post={post}/>
-          </Link>
+          <PostInterAction post={post} />
         </div>
-        
       ))}
     </div>
   );
