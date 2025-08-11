@@ -1,8 +1,6 @@
 import Link from "next/link";
 
 async function CategoryList() {
-  await new Promise((res) => setTimeout(() => res(), 3000));
-
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/category/list`);
   const {
     data: { categories },
@@ -13,7 +11,7 @@ async function CategoryList() {
       {categories.map((categorie) => {
         return (
           <li key={categorie._id}>
-            <Link href={`blogs/category/${categorie.slug}`}>
+            <Link href={`/blogs/category/${categorie.slug}`}>
               {categorie.title}
             </Link>
           </li>
@@ -24,3 +22,4 @@ async function CategoryList() {
 }
 
 export default CategoryList;
+

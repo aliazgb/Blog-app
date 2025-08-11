@@ -9,7 +9,7 @@ export async function getPostSlug(slug) {
   return post;
 }
 
-export async function getPosts(options) {
+export async function getPosts(options ) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/post/list`,
     options

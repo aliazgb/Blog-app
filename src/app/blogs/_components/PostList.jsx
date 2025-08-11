@@ -7,10 +7,8 @@ import Link from "next/link";
 import CoverImage from "./CoverImage";
 import PostInterAction from "./PostInterAction";
 
-async function PostList() {
-  const cookieStore = cookies();
-  const options = setCookieOnReq(cookieStore);
-  const posts = await getPosts(options);
+async function PostList({posts}) {
+
 
   return (
     <div className="grid grid-cols-12 gap-8">

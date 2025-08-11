@@ -1,11 +1,12 @@
-import Spinner from "@/ui/Spinner";
-import { Suspense } from "react";
+import { getPosts } from "@/services/postServices";
+import { setCookieOnReq } from "@/utils/setCookieOnReq";
+import { cookies } from "next/headers";
 import PostList from "../_components/PostList";
 
-
-export const revalidate = 0;
-
-function page() {
+async function page() {
+  const cookieStore = cookies();
+  const options = setCookieOnReq(cookieStore);
+  const posts = await getPosts(options);
   return (
     <div>
       <p className="text-secondary-400 mb-4">
@@ -14,9 +15,7 @@ function page() {
         eveniet consequuntur, dolorum numquam necessitatibus sapiente nam
         perferendis atque. Quae, unde.
       </p>
-      <Suspense fallback={<Spinner />}>
-        <PostList />
-      </Suspense>
+      <PostList posts={posts} />
     </div>
   );
 }

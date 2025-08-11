@@ -22,7 +22,9 @@ function PostInterAction({ post }) {
       const { message } = await likePostApi(postId);
       toast.success(message);
       router.refresh();
-    } catch (error) {}
+    } catch (error) {
+      toast.error(error?.response?.data?.message)
+    }
   };
 
   return (
