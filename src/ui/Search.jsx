@@ -4,10 +4,26 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function Search() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathName = usePathname();
+  const formSubmit = (e) => {
+    e.preventDefault();
+    const search = e.target.search;
+    const searchValue = search.value;
+    const newParams = new URLSearchParams(searchParams.toString());
 
+    if (searchValue) {
+      newParams.set("search", searchValue);
+    } else {
+      newParams.delete("search");
+    }
+
+    router.push(pathName + "?" + newParams.toString(), { scroll: false });
+  };
 
   return (
-    <form className="relative" >
+    <form className="relative" onSubmit={formSubmit}>
       <input
         type="text"
         name="search"
