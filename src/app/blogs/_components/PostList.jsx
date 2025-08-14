@@ -9,7 +9,7 @@ import PostInterAction from "./PostInterAction";
 
 async function PostList({posts}) {
 
-
+  
   return (
     <div className="grid grid-cols-12 gap-8">
       {posts.map((post) => (

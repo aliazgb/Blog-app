@@ -1,22 +1,33 @@
 import { getPosts } from "@/services/postServices";
 import { setCookieOnReq } from "@/utils/setCookieOnReq";
 import { cookies } from "next/headers";
+import queryString from "query-string";
 import PostList from "../_components/PostList";
 
-async function page() {
+async function page({ searchParams, params }) {
+  const queries = queryString.stringify(searchParams);
+
   const cookieStore = cookies();
   const options = setCookieOnReq(cookieStore);
-  const posts = await getPosts(options);
+  const posts = await getPosts(queries, options);
+  const { search } = searchParams;
+
   return (
-    <div>
-      <p className="text-secondary-400 mb-4">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Suscipit
-        similique aut iusto sunt cum, quisquam harum! Officia dolores aperiam
-        eveniet consequuntur, dolorum numquam necessitatibus sapiente nam
-        perferendis atque. Quae, unde.
-      </p>
+    <>
+      {search ? (
+        <p className="mb-4 text-secondary-700">
+          {posts.length === 0 ? (
+            <span>no post Found For &quot; {search} &quot;</span>
+          ) : (
+            <span className="font-bold">
+              {posts.length} result for &quot; {search} &quot;
+            </span>
+          )}
+        </p>
+      ) : null}
+
       <PostList posts={posts} />
-    </div>
+    </>
   );
 }
 
