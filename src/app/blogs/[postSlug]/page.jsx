@@ -1,8 +1,8 @@
 import { getPostSlug, getPosts } from "@/services/postServices";
 import Image from "next/image";
+import RelatedPosts from "../_components/RelatedPosts";
+import PostComment from "../_components/comment/PostComment";
 import NotFound from "./not-found";
-
-
 
 export async function generateMetadata({ params }) {
   const post = await getPostSlug(params.postSlug);
@@ -38,6 +38,8 @@ async function SinglePost({ params }) {
           alt={post.briefText}
         />
       </div>
+      {post.related.length > 0 && <RelatedPosts posts={post.related} />}
+      <PostComment post={post} />
     </div>
   );
 }

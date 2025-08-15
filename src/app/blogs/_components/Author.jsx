@@ -1,9 +1,10 @@
 import Avatar from "@/ui/Avatar";
 
-function Author({src}) {
+function Author({ name, avatarUrl }) {
   return (
-    <div className="">
-      <Avatar src={src}/>
+    <div className="flex items-center gap-x-1">
+      <Avatar src={avatarUrl} />
+      <span className="text-sm text-secondary-500">{name}</span>
     </div>
   );
 }

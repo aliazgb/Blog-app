@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import queryString from "query-string";
 import PostList from "../_components/PostList";
 
-async function page({ searchParams, params }) {
+async function page({ searchParams }) {
   const queries = queryString.stringify(searchParams);
 
   const cookieStore = cookies();

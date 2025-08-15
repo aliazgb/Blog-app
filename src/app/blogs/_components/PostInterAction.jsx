@@ -43,7 +43,7 @@ function PostInterAction({ post }) {
       </div>
       <div className="flex items-center">
         <span className="text-sm text-secondary-500">{post.author.name}</span>
-        <Author {...post.author} />
+        <Author {...post} />
       </div>
     </div>
   );
