@@ -18,7 +18,7 @@ export async function generateStaticParams() {
 }
 
 async function SinglePost({ params }) {
-  await new Promise((res) => setTimeout(() => res(), 3000));
+
 
   const post = await getPostSlug(params.postSlug);
 

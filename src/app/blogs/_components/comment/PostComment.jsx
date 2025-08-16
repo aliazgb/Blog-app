@@ -1,15 +1,44 @@
 "use client";
+import { useAuth } from "@/context/AutchContext";
 import Button from "@/ui/Button";
+import Modal from "@/ui/Modal";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import classNames from "classnames";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import Comment from "./Comment";
+import CommentForm from "./CommentForm";
 
 function PostComment({ post: { comments, _id: postId } }) {
+  const [open, setOpen] = useState(false);
+  const [parent, setParent] = useState(null);
+  const user = useAuth();
+  const router = useRouter();
+  const addNewCommentHandler = (parent) => {
+    if (!user) {
+      router.push("/signin");
+      return;
+    }
+    setParent(parent);
+    setOpen(true);
+  };
   return (
     <div className="mb-10">
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        title={parent ? "Reply to comment" : "New comment"}
+        description={parent ? parent.user.name : "Enter your comment"}
+      >
+        <CommentForm parentId={parent ? parent._id : null} postId={postId} />
+      </Modal>
       <div className="flex flex-col items-center lg:flex-row justify-between gap-y-3 mb-8">
         <h2 className="text-2xl font-bold text-secondary-800">Comments</h2>
-        <Button variant="outline" className="flex items-center py-2">
+        <Button
+          variant="outline"
+          className="flex items-center py-2"
+          onClick={() => addNewCommentHandler(null)}
+        >
           <QuestionMarkCircleIcon className="w-4 ml-2" />
           <span>Add New Comment</span>
         </Button>
@@ -47,7 +76,9 @@ function PostComment({ post: { comments, _id: postId } }) {
             );
           })
         ) : (
-          <p className="text-secondary-500">There are no comments on this post yet</p>
+          <p className="text-secondary-500">
+            There are no comments on this post yet
+          </p>
         )}
       </div>
     </div>

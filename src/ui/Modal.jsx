@@ -1,4 +1,4 @@
-import useOutsideClick from "@/hook/useOutsideClick";
+import useOutsideClick from "@/hooks/useOutsideClick";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { createPortal } from "react-dom";
 
