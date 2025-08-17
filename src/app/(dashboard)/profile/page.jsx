@@ -1,13 +1,15 @@
-import { Suspense } from "react";
+import { fetchAllData } from "@/services/data";
+import Card from "./_components/Card";
 
 async function Profile() {
+  const { numberOfComments, numberOfUsers, numberOfPosts } = await fetchAllData();
+  console.log(numberOfComments)
   return (
     <div>
-      <h1 className="text-xl mb-8 text-secondary-500">داشبورد</h1>
-      <Suspense></Suspense>
-      <div>
-        <h1 className="text-xl mb-4 text-secondary-500">آخرین پست ها</h1>
-        <Suspense></Suspense>
+      <div className="grid gap-6 md:grid-cols-3 mb-8">
+        <Card title="Comments" value={numberOfComments} type="comments" />
+        <Card title="Users" value={numberOfUsers} type="users" />
+        <Card title="Posts" value={numberOfPosts} type="posts" />
       </div>
     </div>
   );

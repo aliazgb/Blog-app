@@ -15,7 +15,7 @@ function Home() {
         </p>
         <div className="flex justify-center gap-x-8 w-full mt-10">
           <Button variant="primary">
-            <Link href="/blog">View Blogs</Link>
+            <Link href="/blogs">View Blogs</Link>
           </Button>
           <Button variant="outline">
             <Link href="/profile">View Profile</Link>

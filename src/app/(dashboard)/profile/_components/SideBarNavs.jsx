@@ -12,32 +12,32 @@ import {
   const sidebarNavs = [
     {
       id: 1,
-      title: "داشبورد",
+      title: "dashboard",
       icon: <RectangleGroupIcon className="w-5 h-5" />,
       href: "/profile",
     },
   
     {
       id: 2,
-      title: "پست ها",
+      title: "posts",
       icon: <DocumentTextIcon className="w-5 h-5" />,
       href: "/profile/posts",
     },
     {
       id: 3,
-      title: "نظرات",
+      title: "comments",
       icon: <ChatBubbleBottomCenterIcon className="w-5 h-5" />,
       href: "/profile/comments",
     },
     {
       id: 4,
-      title: "دسته بندی ها",
+      title: "category",
       icon: <Squares2X2Icon className="w-5 h-5" />,
       href: "/profile/categories",
     },
     {
       id: 5,
-      title: "کاربران",
+      title: "users",
       icon: <UsersIcon className="w-5 h-5" />,
       href: "/profile/users",
     },

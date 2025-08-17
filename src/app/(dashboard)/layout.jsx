@@ -3,8 +3,8 @@ import SideBar from "./profile/_components/Sidebar";
 
 
 export const metadata = {
-  title: "پروفایل",
-  description: "پروفایل",
+  title: "profile",
+  description: "profile",
 };
 
 export default function RootLayout({ children }) {

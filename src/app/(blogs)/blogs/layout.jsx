@@ -1,7 +1,7 @@
 import Search from "@/ui/Search";
 import Spinner from "@/ui/Spinner";
 import { Suspense } from "react";
-import CategoryList from "../_components/CategoryList";
+import CategoryList from "./_components/CategoryList";
 
 function layout({ children }) {
   return (

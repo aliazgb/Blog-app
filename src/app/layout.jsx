@@ -14,9 +14,8 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="min-h-screen ">
         <AuthProvider>
-          <Header />
-          <div className="container xl:max-w-screen-xl">{children}</div>
           <Toaster />
+          {children}
         </AuthProvider>
       </body>
     </html>
