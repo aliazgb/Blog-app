@@ -1,4 +1,5 @@
 import Breadcrumbs from "@/ui/BreadCrumbs";
+import CreatePostForm from "../_/CreatePostForm";
 
 function CeatePostPage() {
   return (
@@ -16,7 +17,7 @@ function CeatePostPage() {
       <h1 className="text-secondary-700 font-bold text-2xl mb-6">
         Create a Post
       </h1>
-      {/* <CreatePostForm /> */}
+      <CreatePostForm />
     </div>
   );
 }

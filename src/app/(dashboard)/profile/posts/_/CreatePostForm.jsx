@@ -1,227 +1,65 @@
 "use client";
+
 import { useCategories } from "@/hooks/useCategories";
-import Button from "@/ui/Button";
-import ButtonIcon from "@/ui/ButtonIcon";
-import FileInput from "@/ui/FileInput";
 import RHFSelect from "@/ui/RHFSelect";
 import RHFTextField from "@/ui/RHFTextField";
-import { XMarkIcon } from "@heroicons/react/24/outline";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import useCreatePost from "./useCreatePost";
-import SpinnerMini from "@/ui/SpinnerMini";
-import { useRouter } from "next/navigation";
-import useEditPost from "./useEditPost";
-import { imageUrlToFile } from "@/utils/fileFormatter";
 
-const schema = yup
-  .object({
-    title: yup
-      .string()
-      .min(5, "Title must be at least 5 characters")
-      .required("Title is required"),
-    briefText: yup
-      .string()
-      .min(10, "Brief text must be at least 10 characters")
-      .required("Brief text is required"),
-    text: yup
-      .string()
-      .min(10, "Text must be at least 10 characters")
-      .required("Text is required"),
-    slug: yup.string().required("Slug is required"),
-    readingTime: yup
-      .number()
-      .positive()
-      .integer()
-      .required("Reading time is required")
-      .typeError("Please enter a number"),
-    category: yup.string().required("Category is required"),
-  })
-  .required();
-
-function CreatePostForm({ postToEdit = {} }) {
-  const { _id: editId } = postToEdit;
-  const isEditSession = Boolean(editId);
+function CreatePostForm() {
+  const schema = yup.object();
   const {
-    title,
-    text,
-    slug,
-    briefText,
-    readingTime,
-    category,
-    coverImage,
-    coverImageUrl: prevCoverImageUrl,
-  } = postToEdit;
-
-  let editValues = {};
-  if (isEditSession) {
-    editValues = {
-      title,
-      text,
-      slug,
-      briefText,
-      readingTime,
-      category: category._id,
-      coverImage,
-    };
-  }
-
-  const { categories } = useCategories();
-  const [coverImageUrl, setCoverImageUrl] = useState(prevCoverImageUrl || null);
-  const { createPost, isCreating } = useCreatePost();
-  const { editPost, isEditing } = useEditPost();
-  const router = useRouter();
-
-  const {
-    control,
-    reset,
     register,
     formState: { errors },
     handleSubmit,
-    setValue,
-  } = useForm({
-    mode: "onTouched",
-    resolver: yupResolver(schema),
-    defaultValues: editValues,
-  });
-
-  useEffect(() => {
-    if (prevCoverImageUrl) {
-      async function fetchMyApi() {
-        const file = await imageUrlToFile(prevCoverImageUrl);
-        setValue("coverImage", file);
-      }
-      fetchMyApi();
-    }
-  }, [editId, prevCoverImageUrl, setValue]);
-
-  const onSubmit = (data) => {
-    const formData = new FormData();
-
-    for (const key in data) {
-      formData.append(key, data[key]);
-    }
-
-    if (isEditSession) {
-      editPost(
-        { id: editId, data: formData },
-        {
-          onSuccess: () => {
-            reset();
-            router.push("/profile/posts");
-          },
-        }
-      );
-    } else {
-      createPost(formData, {
-        onSuccess: () => {
-          router.push("/profile/posts");
-        },
-      });
-    }
-  };
-
+    reset,
+  } = useForm({ mode: "onTouched", resolver: yupResolver(schema) });
+  const { transformedCategories: categories } = useCategories();
   return (
-    <form className="form" onSubmit={handleSubmit(onSubmit)}>
+    <form className="form">
       <RHFTextField
+        label="title"
         name="title"
-        label="Title"
-        errors={errors}
         register={register}
+        errors={errors}
         isRequired
       />
       <RHFTextField
-        name="briefText"
-        label="Brief Text"
-        errors={errors}
+        label="Short text"
+        name="ShortText"
         register={register}
+        errors={errors}
         isRequired
       />
       <RHFTextField
-        name="text"
-        label="Text"
-        errors={errors}
+        label="description"
+        name="description"
         register={register}
+        errors={errors}
         isRequired
       />
       <RHFTextField
+        label="slug"
         name="slug"
-        label="Slug"
-        errors={errors}
         register={register}
+        errors={errors}
         isRequired
       />
       <RHFTextField
-        name="readingTime"
-        label="Reading Time"
-        errors={errors}
+        label="reading time"
+        name="readingtime"
         register={register}
+        errors={errors}
         isRequired
       />
       <RHFSelect
+        label="category"
         name="category"
-        label="Category"
-        errors={errors}
+        options={categories}
         register={register}
         isRequired
-        options={categories}
       />
-      <Controller
-        name="coverImage"
-        control={control}
-        rules={{ required: "Cover image is required" }}
-        render={({ field: { value, onChange, ...rest } }) => {
-          return (
-            <FileInput
-              label="Select Cover Image"
-              name="coverImage"
-              isRequired
-              errors={errors}
-              {...rest}
-              value={value?.fileName}
-              onChange={(event) => {
-                const file = event.target.files[0];
-                onChange(file);
-                setCoverImageUrl(URL.createObjectURL(file));
-                event.target.value = null;
-              }}
-            />
-          );
-        }}
-      />
-
-      {coverImageUrl && (
-        <div className="relative aspect-video overflow-hidden rounded-lg">
-          <Image
-            fill
-            alt="cover-image"
-            src={coverImageUrl}
-            className="object-cover object-center"
-          />
-          <ButtonIcon
-            onClick={() => {
-              setCoverImageUrl(null);
-              setValue("coverImage", null);
-            }}
-            variant="red"
-            className="w-6 h-6 absolute left-4 top-4"
-          >
-            <XMarkIcon />
-          </ButtonIcon>
-        </div>
-      )}
-      <div>
-        {isCreating || isEditing ? (
-          <SpinnerMini />
-        ) : (
-          <Button variant="primary" type="submit" className="w-full">
-            Submit
-          </Button>
-        )}
-      </div>
     </form>
   );
 }

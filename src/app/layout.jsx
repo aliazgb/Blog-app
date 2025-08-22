@@ -1,5 +1,5 @@
-import Header from "@/components/Header";
 import AuthProvider from "@/context/AutchContext";
+import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import "@/styles/globals.css";
 import { Toaster } from "react-hot-toast";
 export const metadata = {
@@ -13,10 +13,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="dark">
       <body className="min-h-screen">
-        <AuthProvider>
-          <Toaster />
-          {children}
-        </AuthProvider>
+        <Toaster />
+        <ReactQueryProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );
