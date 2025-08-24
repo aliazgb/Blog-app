@@ -32,7 +32,7 @@ export default function Pagination({ totalPages }) {
         isDisabled={currentPage <= 1}
       />
 
-      <div className="flex -space-x-px">
+      <div className="flex -space-x-px mx-4">
         {allPages.map((page, index) => {
           // let position: "first" | "last" | "single" | "middle" | undefined;
           let position;
@@ -66,10 +66,10 @@ export default function Pagination({ totalPages }) {
 
 function PaginationNumber({ page, href, isActive, position }) {
   const className = classNames(
-    "flex h-10 w-10 items-center justify-center text-sm border border-secondary-400 text-secondary-400",
+    "mx-2 flex h-10 w-10 items-center justify-center text-sm border border-secondary-400 text-secondary-400",
     {
-      "rounded-r-md": position === "first" || position === "single",
-      "rounded-l-md": position === "last" || position === "single",
+      "rounded-md": position === "first" || position === "single",
+      "rounded-md": position === "last" || position === "single",
       "z-10 bg-primary-900 !border-primary-900 text-white": isActive,
       "hover:bg-secondary-200": !isActive && position !== "middle",
       "text-secondary-300": position === "middle",
@@ -99,9 +99,9 @@ function PaginationArrow({ href, direction, isDisabled }) {
 
   const icon =
     direction === "left" ? (
-      <ArrowLeftIcon className="w-4" />
-    ) : (
       <ArrowRightIcon className="w-4" />
+    ) : (
+      <ArrowLeftIcon className="w-4" />
     );
 
   return isDisabled ? (

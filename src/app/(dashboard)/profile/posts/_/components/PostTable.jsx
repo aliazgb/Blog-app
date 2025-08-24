@@ -3,7 +3,7 @@ import Table from "@/ui/Table";
 import TableRow from "./PostRow";
 
 async function PostRow({queries}) {
-  const posts = await getPosts(queries);
+  const {posts} = await getPosts(queries);
   return (
     <Table>
       <Table.Header>

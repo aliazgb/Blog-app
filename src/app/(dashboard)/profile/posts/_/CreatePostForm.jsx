@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 function CreatePostForm() {
+  const [coverImageUrl, setCoverImageUrl] = useState(prevCoverImageUrl || null);
   const schema = yup.object();
   const {
     register,
@@ -59,6 +60,29 @@ function CreatePostForm() {
         options={categories}
         register={register}
         isRequired
+      />
+            <Controller
+        name="coverImage"
+        control={control}
+        render={({ field: { value, onChange, ...rest } }) => {
+          return (
+            <FileInput
+              label="choise cover Image"
+              name="coverImage"
+              isRequired
+              errors={errors}
+              {...rest}
+              value={value?.fileName}
+              onChange={(event) => {
+                const file = event.target.files[0];
+                // console.log(file);
+                onChange(file);
+                setCoverImageUrl(URL.createObjectURL(file));
+                event.target.value = null;
+              }}
+            />
+          );
+        }}
       />
     </form>
   );
