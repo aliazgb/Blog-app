@@ -4,7 +4,6 @@ function FileInput({
   label,
   name,
   value,
-  dir = "rtl",
   onChange,
   isRequired,
   className,
@@ -29,7 +28,6 @@ function FileInput({
           type="file"
           className="sr-only hidden"
           name={name}
-          dir={dir}
           value={value}
           onChange={onChange}
           {...rest}

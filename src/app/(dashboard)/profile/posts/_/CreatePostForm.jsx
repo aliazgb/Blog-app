@@ -1,20 +1,30 @@
 "use client";
 
 import { useCategories } from "@/hooks/useCategories";
+import ButtonIcon from "@/ui/ButtonIcon";
+import FileInput from "@/ui/FileInput";
 import RHFSelect from "@/ui/RHFSelect";
 import RHFTextField from "@/ui/RHFTextField";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
+import Image from "next/image";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
+import useCreatePost from "../create/_/useCreatePost";
+import SpinnerMini from "@/ui/SpinnerMini";
 
 function CreatePostForm() {
-  const [coverImageUrl, setCoverImageUrl] = useState(prevCoverImageUrl || null);
   const schema = yup.object();
+  const [imageUrl, setImageUrl] = useState(null);
+  const { createPost, isCreating } = useCreatePost();
   const {
-    register,
+    control,
     formState: { errors },
     handleSubmit,
     reset,
+    setValue,
+    register,
   } = useForm({ mode: "onTouched", resolver: yupResolver(schema) });
   const { transformedCategories: categories } = useCategories();
   return (
@@ -61,29 +71,56 @@ function CreatePostForm() {
         register={register}
         isRequired
       />
-            <Controller
-        name="coverImage"
+      <Controller
+        name="cover-image"
+        rules={{ required: "*" }}
         control={control}
-        render={({ field: { value, onChange, ...rest } }) => {
+        render={({ field: { onChange, value, ...rest } }) => {
           return (
             <FileInput
-              label="choise cover Image"
-              name="coverImage"
-              isRequired
-              errors={errors}
               {...rest}
+              label="coverImage"
               value={value?.fileName}
-              onChange={(event) => {
-                const file = event.target.files[0];
-                // console.log(file);
+              onChange={(e) => {
+                const file = e.target.files[0];
+                setImageUrl(URL.createObjectURL(file));
                 onChange(file);
-                setCoverImageUrl(URL.createObjectURL(file));
-                event.target.value = null;
+                e.target.value = null;
               }}
             />
           );
         }}
       />
+
+{imageUrl && (
+        <div className="relative aspect-video overflow-hidden rounded-lg">
+          <Image
+            fill
+            alt="cover-iamge"
+            src={imageUrl}
+            className="object-cover object-center"
+          />
+          <ButtonIcon
+            onClick={() => {
+              setImageUrl(null);
+              setValue("coverImage", null);
+            }}
+            variant="red"
+            className="w-6 h-6 absolute left-4 top-4"
+          >
+            <XMarkIcon />
+          </ButtonIcon>
+        </div>
+      )}
+      <div>
+        {isCreating || isEditing ? (
+          <SpinnerMini />
+        ) : (
+          <Button variant="primary" type="submit" className="w-full">
+            Confirm
+          </Button>
+        )}
+      </div>
     </form>
   );
 }
