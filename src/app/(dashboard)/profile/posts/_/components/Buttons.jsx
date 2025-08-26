@@ -17,16 +17,18 @@ export function CreatePost() {
 
 export function DeletePost() {
   return (
-    <ButtonIcon variant="outline">
-      <TrashIcon className="text-error" />
-    </ButtonIcon>
+      <ButtonIcon variant="outline">
+        <TrashIcon className="text-error" />
+      </ButtonIcon>
   );
 }
 
-export function EditPost() {
+export function EditPost({id}) {
   return (
-    <ButtonIcon>
-      <PencilIcon />
-    </ButtonIcon>
+    <Link href={`/profile/posts/${id}/edit`}>
+      <ButtonIcon>
+        <PencilIcon />
+      </ButtonIcon>
+    </Link>
   );
 }
