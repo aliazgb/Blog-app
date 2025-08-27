@@ -30,5 +30,5 @@ export async function editPostApi(id) {
 }
 
 export async function getPostById(id) {
-  return http.patch(`post/${id}`).then(({ data }) => data.data);
+  return http.get(`post/${id}`).then(({ data }) => data.data);
 }

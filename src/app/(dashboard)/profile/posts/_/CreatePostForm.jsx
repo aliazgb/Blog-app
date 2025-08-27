@@ -7,19 +7,23 @@ import FileInput from "@/ui/FileInput";
 import RHFSelect from "@/ui/RHFSelect";
 import RHFTextField from "@/ui/RHFTextField";
 import SpinnerMini from "@/ui/SpinnerMini";
+import { imageUrlToFile } from "@/utils/fileFormater";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import useCreatePost from "../create/_/useCreatePost";
 
-function CreatePostForm() {
+function CreatePostForm({ postEdit = {} }) {
   const [imageUrl, setImageUrl] = useState(null);
+  const { _id: editId } = postEdit;
+  const isEditSession = Boolean(editId);
   const { createPost, isCreating } = useCreatePost();
   const router = useRouter();
+
   const schema = yup
     .object({
       title: yup
@@ -46,21 +50,58 @@ function CreatePostForm() {
     .required();
 
   const {
+    title,
+    text,
+    slug,
+    briefText,
+    readingTime,
+    category,
+    coverImage,
+    coverImageUrl: prevCoverImage,
+  } = postEdit;
+
+  let editValue = {};
+  if (isEditSession) {
+    editValue = {
+      title,
+      text,
+      slug,
+      briefText,
+      readingTime,
+      category: category._id,
+      coverImage,
+    };
+  }
+
+  const {
     control,
     formState: { errors },
     handleSubmit,
     reset,
     setValue,
     register,
-  } = useForm({ mode: "onTouched", resolver: yupResolver(schema) });
+  } = useForm({
+    mode: "onTouched",
+    resolver: yupResolver(schema),
+    defaultValues: editValue,
+  });
   const { transformedCategories: categories } = useCategories();
+
+  useEffect(() => {
+    if (prevCoverImage) {
+      async function fetchMyApi() {
+        const file = await imageUrlToFile(prevCoverImage);
+        setValue("coverImage", file);
+      }
+      fetchMyApi();
+    }
+  }, [editId]);
 
   const onSubmit = (data) => {
     const formData = new FormData();
     for (const key in data) {
       formData.append(key, data[key]);
     }
-    console.log(formData);
     createPost(formData, {
       onSuccess: () => {
         router.push("/profile/posts");
