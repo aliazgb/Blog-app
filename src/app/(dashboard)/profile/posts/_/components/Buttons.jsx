@@ -1,6 +1,12 @@
+"use client";
 import ButtonIcon from "@/ui/ButtonIcon";
+import ConfirmDelete from "@/ui/ConfirmDelete";
+import Modal from "@/ui/Modal";
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import useDeletePost from "../../create/_/useDeletePost";
 
 export function CreatePost() {
   return (
@@ -15,15 +21,31 @@ export function CreatePost() {
   );
 }
 
-export function DeletePost() {
+export function DeletePost({ post: { title, _id: id } }) {
+  const [open, setOpen] = useState(false);
+  const { isDeleting, deletePost } = useDeletePost();
+  const router = useRouter();
   return (
-      <ButtonIcon variant="outline">
+    <>
+      <ButtonIcon variant="outline" onClick={() => setOpen(true)} title={title}>
         <TrashIcon className="text-error" />
       </ButtonIcon>
+      <Modal open={open} onClose={() => setOpen(false)} title={title}>
+        <ConfirmDelete
+          resourceName={title}
+          onClose={() => setOpen(false)}
+          onConfirm={(e) => {
+            e.preventDefault();
+            setOpen(false);
+            deletePost(id, { onSuccess: router.refresh() });
+          }}
+        />
+      </Modal>
+    </>
   );
 }
 
-export function EditPost({id}) {
+export function EditPost({ id }) {
   return (
     <Link href={`/profile/posts/${id}/edit`}>
       <ButtonIcon>

@@ -31,7 +31,7 @@ function TableRow({ posts, index }) {
       </td>
       <td>
         <div className="flex justify-end  gap-x-3">
-          <DeletePost id={posts._id} />
+          <DeletePost post={posts} />
           <EditPost id={posts._id} />
         </div>
       </td>

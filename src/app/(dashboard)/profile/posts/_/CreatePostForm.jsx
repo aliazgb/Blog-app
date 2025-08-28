@@ -16,14 +16,12 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import useCreatePost from "../create/_/useCreatePost";
+import useEditPost from "../create/_/useEditPost";
 
 function CreatePostForm({ postEdit = {} }) {
-  const [imageUrl, setImageUrl] = useState(null);
   const { _id: editId } = postEdit;
   const isEditSession = Boolean(editId);
-  const { createPost, isCreating } = useCreatePost();
-  const router = useRouter();
-
+  const { isEditing, editPost } = useEditPost();
   const schema = yup
     .object({
       title: yup
@@ -72,7 +70,9 @@ function CreatePostForm({ postEdit = {} }) {
       coverImage,
     };
   }
-
+  const [imageUrl, setImageUrl] = useState(null || prevCoverImage);
+  const { createPost, isCreating } = useCreatePost();
+  const router = useRouter();
   const {
     control,
     formState: { errors },
@@ -102,11 +102,20 @@ function CreatePostForm({ postEdit = {} }) {
     for (const key in data) {
       formData.append(key, data[key]);
     }
-    createPost(formData, {
-      onSuccess: () => {
-        router.push("/profile/posts");
-      },
-    });
+    if (isEditSession) {
+      editPost(
+        { id: editId, data: formData },
+        {
+          onSuccess: () => router.push("/profile/posts"),
+        }
+      );
+    } else {
+      createPost(formData, {
+        onSuccess: () => {
+          router.push("/profile/posts");
+        },
+      });
+    }
   };
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
