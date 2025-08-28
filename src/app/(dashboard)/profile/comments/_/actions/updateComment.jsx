@@ -1,5 +1,6 @@
+"use server";
 import { updateCommentApi } from "@/services/commentService";
-import setCookiesOnReq from "@/utils/setCookieOnReq";
+import { setCookieOnReq } from "@/utils/setCookieOnReq";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
@@ -14,7 +15,7 @@ export default async function updateComment(
   };
 
   try {
-    const options = setCookiesOnReq(cookieStore);
+    const options = setCookieOnReq(cookieStore);
     const { message } = await updateCommentApi(
       { id: commentId, data },
       options

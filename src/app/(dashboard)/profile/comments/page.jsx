@@ -1,5 +1,6 @@
 import Fallback from "@/ui/Fallback";
 import { Suspense } from "react";
+import CommentsTable from "./_/components/CommentTable";
 
 async function CommentPage() {
   return (
