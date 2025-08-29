@@ -35,7 +35,6 @@ async function CommentsTable() {
         <th>Author</th>
         <th>Created At</th>
         <th>Status</th>
-        <th>Actions</th>
       </Table.Header>
       <Table.Body>
         {normalizedComments.map((commentData) => (

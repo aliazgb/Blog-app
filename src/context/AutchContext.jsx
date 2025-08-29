@@ -1,6 +1,7 @@
 "use client";
 
-import { getUserApi, signinApi, signupApi } from "@/services/authService";
+import { getUserApi, logoutApi, signinApi, signupApi } from "@/services/authService";
+import { useRouter } from "next/navigation";
 
 import { createContext, useContext, useEffect, useReducer } from "react";
 import toast from "react-hot-toast";
@@ -29,6 +30,9 @@ function authReducer(state, action) {
 
     case "rejected":
       return { ...state, error: action.payload, isAuthenticated: false };
+
+    case "logout":
+      return initialState;
   }
 }
 
@@ -37,6 +41,7 @@ export default function AuthProvider({ children }) {
     authReducer,
     initialState
   );
+  const router=useRouter()
 
   async function Signin(values) {
     dispatch({ type: "loading" });
@@ -44,7 +49,7 @@ export default function AuthProvider({ children }) {
       const { user, message } = await signinApi(values);
       dispatch({ type: "signin", payload: user });
       toast.success(message);
-      console.log("first");
+      router.push("/blogs")
     } catch (error) {
       const msg = error?.response?.data?.message;
       dispatch({ type: "rejected", payload: msg });
@@ -58,7 +63,7 @@ export default function AuthProvider({ children }) {
       const { user, message } = await signupApi(values);
       dispatch({ type: "signup", payload: user });
       toast.success(message);
-      //   router.push("/profile")
+        router.push("/profile")
     } catch (error) {
       const msg = error?.response?.data?.message;
       dispatch({ type: "rejected", payload: msg });
@@ -71,11 +76,22 @@ export default function AuthProvider({ children }) {
     try {
       const { user } = await getUserApi();
       dispatch({ type: "user/loaded", payload: user });
-      //   router.push("/profile")
+        router.push("/profile")
     } catch (error) {
       const msg = error?.response?.data?.message;
       dispatch({ type: "rejected", payload: msg });
       toast.error(msg);
+    }
+  }
+  async function logout() {
+    try {
+      await logoutApi();
+      router.push("/signin");
+      dispatch({ type: "logout" });
+    } catch (error) {
+      toast.error(
+        error?.response?.data?.message || "An error occurred during logout."
+      );
     }
   }
 
@@ -95,6 +111,7 @@ export default function AuthProvider({ children }) {
         Signin,
         Signup,
         getUser,
+        logout
       }}
     >
       {children}

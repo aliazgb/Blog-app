@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/context/AutchContext";
 import ButtonIcon from "@/ui/ButtonIcon";
 import {
   ArrowLeftStartOnRectangleIcon,
@@ -7,11 +8,15 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import toast from "react-hot-toast";
 import SideBarNavs from "./SideBarNavs";
 
 function SideBar({ onClose }) {
+  const { logout } = useAuth();
+
   const logoutHandler = async () => {
-    await logout;
+    await logout();
+    toast.success("Logout was successful");
   };
 
   return (
@@ -38,7 +43,7 @@ function SideBar({ onClose }) {
         <SideBarNavs />
         <div className="flex items-center gap-x-1 rounded-2xl font-medium transition-all duration-200 text-secondary-700 py-3  hover:text-red-400 cursor-pointer">
           <ArrowLeftStartOnRectangleIcon className="ml-4 h-5 w-5" />
-          <span>sign out</span>
+          <span onClick={logoutHandler}>sign out</span>
         </div>
       </div>
     </div>
