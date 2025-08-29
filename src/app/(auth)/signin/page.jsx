@@ -32,7 +32,7 @@ function Signin() {
 
   return (
     <FormUi>
-      <h1 className="text-2xl font-bold text-white text-center mb-8">Login</h1>
+      <h1 className="text-2xl font-bold text-secondary-900 text-center mb-8">Login</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <RHFTextField
           label="Email"
@@ -56,7 +56,7 @@ function Signin() {
             <Loading />
           </div>
         ) : (
-          <Button type="submit" variantType="primary" className="w-full">
+          <Button type="submit" className="w-full">
             Login
           </Button>
         )}

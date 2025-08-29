@@ -24,6 +24,9 @@ export async function getPosts(queries = "", options) {
 export async function likePostApi(postId) {
   return http.post(`/post/like/${postId}`).then(({ data }) => data.data);
 }
+export async function bookmarkPostApi(postId) {
+  return http.post(`/post/bookmark/${postId}`).then(({ data }) => data.data)
+}
 export async function createPostApi(data) {
   return http.post(`/post/create`, data).then(({ data }) => data.data);
 }

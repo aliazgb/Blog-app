@@ -1,7 +1,7 @@
 "use client";
 
-import { createContext, useContext, useEffect } from "react";
 import useLocalStorageState from "@/hooks/useLocalStorageState";
+import { createContext, useContext, useEffect } from "react";
 
 const DarkModeContext = createContext();
 
@@ -17,12 +17,12 @@ export function DarkModeProvier({ children }) {
 
   useEffect(() => {
     if (typeof document !== "undefined") {
-      if (isDarkMode) {
-        document.documentElement.classList.add("dark-mode");
-        document.documentElement.classList.remove("light-mode");
-      } else {
+      if (!isDarkMode) {
         document.documentElement.classList.add("light-mode");
         document.documentElement.classList.remove("dark-mode");
+      } else {
+        document.documentElement.classList.add("dark-mode");
+        document.documentElement.classList.remove("light-mode");
       }
     }
   }, [isDarkMode]);

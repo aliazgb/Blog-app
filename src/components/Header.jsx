@@ -2,8 +2,7 @@
 
 import { useAuth } from "@/context/AutchContext";
 import { useDarkMode } from "@/context/DarkModeContext";
-import { FaHome, FaRegMoon, FaSignInAlt, FaUserCog } from "react-icons/fa";
-import { FaBloggerB } from "react-icons/fa6";
+import { FaBloggerB, FaHome, FaRegMoon, FaSignInAlt, FaUserCog } from "react-icons/fa";
 import { FiSun } from "react-icons/fi";
 import NavLink from "./NavLink";
 
@@ -27,10 +26,8 @@ function Header() {
     <header
       className={`z-10 shadow-md backdrop-blur-sm mb-10 sticky top-0 
       transition-all duration-200 border-b border-b-secondary-300 bg-white/80
-      text-sm sm:text-lg ${
-        isLoading ? "blur-sm opacity-70" : "opacity-100 blur-0"
-      }
-      ${isDarkMode ? "!bg-gray-900":""}
+      text-sm sm:text-lg
+      ${isDarkMode ? "!bg-gray-700/40 backdrop-blur-xl":""}
     `}
     >
       <nav className="container xl:max-w-screen-xl">

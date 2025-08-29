@@ -24,12 +24,12 @@ function Header({}) {
           {isOpenDrawer ? <XMarkIcon /> : <Bars3Icon />}
         </ButtonIcon>
         <span className="text-sm lg:text-lg font-bold text-secondary-700">
-          سلام؛ {user?.name}
+          Hi ; {user?.name}
         </span>
 
-        <Link href="/profile">
+        {/* <Link href="/profile">
           <Avatar src={user?.avatarUrl} />
-        </Link>
+        </Link> */}
         <Drawer open={isOpenDrawer} onClose={() => setIsOpenDrawer(false)}>
           <SideBar onClose={() => setIsOpenDrawer(false)} />
         </Drawer>

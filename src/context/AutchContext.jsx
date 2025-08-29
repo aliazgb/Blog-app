@@ -83,7 +83,7 @@ export default function AuthProvider({ children }) {
       dispatch({ type: "user/loaded", payload: user });
       router.push("/profile");
     } catch (error) {
-      const msg = error?.response?.data?.message;
+      const msg = "Please Login"
       dispatch({ type: "rejected", payload: msg });
       toast.error(msg);
     }
