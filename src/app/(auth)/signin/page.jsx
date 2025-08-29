@@ -1,53 +1,74 @@
 "use client";
-
 import { useAuth } from "@/context/AutchContext";
+import Button from "@/ui/Button";
+import FormUi from "@/ui/FormUi";
+import Loading from "@/ui/Loading";
 import RHFTextField from "@/ui/RHFTextField";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-const schema = yup
-  .object({
-    email: yup.string().required("required"),
-  })
-  .required();
+const schema = yup.object({
+  email: yup.string().email("Email is invalid.").required("Email is required"),
+  password: yup.string().required("Password is required"),
+});
 
 function Signin() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isLoading },
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onTouched",
   });
 
-  const router = useRouter();
   const { Signin } = useAuth();
+
   const onSubmit = async (values) => {
     await Signin(values);
   };
 
   return (
-    <div>
-      <h1>login</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <FormUi>
+      <h1 className="text-2xl font-bold text-white text-center mb-8">Login</h1>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <RHFTextField
-          register={register}
           label="Email"
           name="email"
+          register={register}
           errors={errors}
+          dir="ltr"
+          isRequired
         />
         <RHFTextField
-          register={register}
           label="Password"
           name="password"
+          register={register}
+          errors={errors}
           type="password"
+          dir="ltr"
+          isRequired
         />
-        <button className="w-full primary">Confirm</button>
+        {isLoading ? (
+          <div className="flex justify-center">
+            <Loading />
+          </div>
+        ) : (
+          <Button type="submit" variantType="primary" className="w-full">
+            Login
+          </Button>
+        )}
       </form>
-    </div>
+
+      <Link
+        href="/signup"
+        className="block text-center text-blue-400 mt-6 hover:underline"
+      >
+        Signup
+      </Link>
+    </FormUi>
   );
 }
 

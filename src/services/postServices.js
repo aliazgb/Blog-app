@@ -9,15 +9,17 @@ export async function getPostSlug(slug) {
   return post;
 }
 
-export async function getPosts(queries, options) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/post/list?${queries}`,
-    options
-  );
-  const { data } = await res.json();
-  const { posts, totalPages } = data || {};
-  return { posts, totalPages };
+export async function getPosts(queries = "", options) {
+  const { data } = await http
+    .get(`/post/list?${queries}`, options)
+    .then((res) => res.data);
+
+  return {
+    posts: data.posts,
+    totalPages: data.totalPages,
+  };
 }
+
 
 export async function likePostApi(postId) {
   return http.post(`/post/like/${postId}`).then(({ data }) => data.data);

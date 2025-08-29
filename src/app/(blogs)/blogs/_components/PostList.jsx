@@ -1,9 +1,10 @@
+import Pagination from "@/ui/Pagination";
 import { ClockIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import CoverImage from "./CoverImage";
 import PostInterAction from "./PostInterAction";
 
-async function PostList({ posts }) {
+async function PostList({ posts, totalPages, showPagination = true }) {
   return posts.length > 0 ? (
     <div className="grid grid-cols-12 gap-8">
       {posts.map((post) => (
@@ -26,16 +27,17 @@ async function PostList({ posts }) {
                   <span>{post.readingTime}</span>
                   <span> Minute</span>
                 </div>
-                
               </div>
-              
-              
-              
             </div>
-            </Link>
-            <PostInterAction post={post} />
+          </Link>
+          <PostInterAction post={post} />
         </div>
       ))}
+      {showPagination && (
+        <div className="mt-8  flex w-full justify-center">
+          <Pagination totalPages={totalPages} />
+        </div>
+      )}
     </div>
   ) : null;
 }

@@ -40,6 +40,7 @@ async function SinglePost({ params }) {
       </div>
       {post.related.length > 0 && <RelatedPosts posts={post.related} />}
       <PostComment post={post} />
+      
     </div>
   );
 }

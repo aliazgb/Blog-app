@@ -1,25 +1,38 @@
+import { getPosts } from "@/services/postServices";
 import { setCookieOnReq } from "@/utils/setCookieOnReq";
 import { cookies } from "next/headers";
+import Link from "next/link";
 import queryString from "query-string";
+import { IoMdArrowRoundBack } from "react-icons/io";
 import PostList from "../../_components/PostList";
-import { getPosts } from "@/services/postServices";
 
 async function Category({ params, searchParams }) {
-  const { categorySlug } = params;
+  const { categorySlug } = await params;
+  const search = await searchParams;
+
   const queries = `${queryString.stringify(
-    searchParams
-  )}&categorySlug${categorySlug}`;
-
-  const cookieStore = cookies();
+    search
+  )}&categorySlug=${categorySlug}`;
+  const cookieStore = await cookies();
   const options = setCookieOnReq(cookieStore);
-  const {posts} = await getPosts(queries, options);
-
+  const { posts, totalPages } = await getPosts(queries, options);
   return (
     <div>
+      <div className="mb-8">
+        <Link href="/blogs">
+          <IoMdArrowRoundBack className="text-primary-900 w-6 h-6" />
+        </Link>
+      </div>
       {posts.length === 0 ? (
-        <p>no category found</p>
+        <p className="text-lg text-secondary-600">
+          No posts found in this category.
+        </p>
       ) : (
-        <PostList posts={posts} />
+        <PostList
+          posts={posts}
+          totalPages={totalPages}
+          showPagination={false}
+        />
       )}
     </div>
   );

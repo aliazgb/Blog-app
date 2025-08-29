@@ -1,4 +1,5 @@
 import { getPosts } from "@/services/postServices";
+import Pagination from "@/ui/Pagination";
 import { setCookieOnReq } from "@/utils/setCookieOnReq";
 import { cookies } from "next/headers";
 import queryString from "query-string";
@@ -9,26 +10,29 @@ async function page({ searchParams }) {
 
   const cookieStore = cookies();
   const options = setCookieOnReq(cookieStore);
-  const {posts} = await getPosts(queries, options);
+  const { posts, totalPages } = await getPosts(queries, options);
   const { search } = searchParams;
-
+  const resultsText = posts.length > 1 ? "results" : "result";
   return (
     <>
       {search ? (
         <p className="mb-4 text-secondary-700">
-          {posts.length === 0 ? (
-            <span>no post Found For &quot; {search} &quot;</span>
-          ) : (
-            <span className="font-bold">
-              {posts.length} result for &quot; {search} &quot;
-            </span>
-          )}
+          {posts.length === 0
+            ? "No posts found with these criteria"
+            : `Found  ${posts.length} ${resultsText} for `}
+          <span className="font-bold">&quot;{search}&quot;</span>
         </p>
       ) : null}
-
-      <PostList posts={posts} />
+  
+      {posts.length > 0 ? (
+        <PostList posts={posts} showPagination={false} />
+      ) : null}
+      <div className="mt-9 flex w-full justify-center">
+        <Pagination totalPages={totalPages} />
+      </div>
     </>
   );
+  
 }
 
 export default page;

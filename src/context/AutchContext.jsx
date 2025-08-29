@@ -1,6 +1,11 @@
 "use client";
 
-import { getUserApi, logoutApi, signinApi, signupApi } from "@/services/authService";
+import {
+  getUserApi,
+  logoutApi,
+  signinApi,
+  signupApi,
+} from "@/services/authService";
 import { useRouter } from "next/navigation";
 
 import { createContext, useContext, useEffect, useReducer } from "react";
@@ -23,7 +28,7 @@ function authReducer(state, action) {
       return { user: action.payload, isAuthenticated: true };
 
     case "signup":
-      return { user: action.payload, isAuthenticated: true };
+      return { user: action.payload, isAuthenticated: false };
 
     case "user/loaded":
       return { user: action.payload, isAuthenticated: true };
@@ -41,7 +46,7 @@ export default function AuthProvider({ children }) {
     authReducer,
     initialState
   );
-  const router=useRouter()
+  const router = useRouter();
 
   async function Signin(values) {
     dispatch({ type: "loading" });
@@ -49,7 +54,7 @@ export default function AuthProvider({ children }) {
       const { user, message } = await signinApi(values);
       dispatch({ type: "signin", payload: user });
       toast.success(message);
-      router.push("/blogs")
+      router.push("/blogs");
     } catch (error) {
       const msg = error?.response?.data?.message;
       dispatch({ type: "rejected", payload: msg });
@@ -63,7 +68,7 @@ export default function AuthProvider({ children }) {
       const { user, message } = await signupApi(values);
       dispatch({ type: "signup", payload: user });
       toast.success(message);
-        router.push("/profile")
+      router.push("/signin");
     } catch (error) {
       const msg = error?.response?.data?.message;
       dispatch({ type: "rejected", payload: msg });
@@ -76,7 +81,7 @@ export default function AuthProvider({ children }) {
     try {
       const { user } = await getUserApi();
       dispatch({ type: "user/loaded", payload: user });
-        router.push("/profile")
+      router.push("/profile");
     } catch (error) {
       const msg = error?.response?.data?.message;
       dispatch({ type: "rejected", payload: msg });
@@ -111,7 +116,7 @@ export default function AuthProvider({ children }) {
         Signin,
         Signup,
         getUser,
-        logout
+        logout,
       }}
     >
       {children}
