@@ -3,7 +3,7 @@ import Image from "next/image";
 function Avatar({ width = 40, src }) {
   return (
     <Image
-      src={src || "https://i.postimg.cc/BbZkbb9F/1721899817313-127506334.png"}
+      src={"https://i.postimg.cc/BbZkbb9F/1721899817313-127506334.png"}
       alt={"test"}
       width={width}
       height={width}

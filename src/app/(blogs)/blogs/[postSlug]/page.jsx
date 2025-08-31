@@ -14,6 +14,7 @@ export async function generateMetadata({ params }) {
 
 export async function generateStaticParams() {
   const { posts } = await getPosts();
+  if (!posts || posts.length === 0) return []
   return posts.slice(0, 2).map((post) => ({ postSlug: post.slug }));
 }
 
