@@ -11,10 +11,10 @@ function Comment({ comment, onAddComment }) {
             height={34}
             width={34}
             alt={comment.user?.name || "-"}
-            src={comment.user.avatarUrl}
+            src={comment?.user?.avatarUrl ||"https://i.postimg.cc/BbZkbb9F/1721899817313-127506334.png"}
           />
           <div className="text-sm w-full text-secondary-600">
-            <span className="font-bold block mb-1">{comment.user.name}</span>
+            <span className="font-bold block mb-1">{comment?.user?.name}</span>
             <span className="block text-secondary-500 text-xs">
               {comment.createdAt}
             </span>

@@ -31,7 +31,7 @@ async function SinglePost({ params }) {
         <Image
           className="object-cover object-center hover:scale-110 transition-all ease-out duration-300"
           fill
-          src={post.coverImage}
+          src={post?.coverImage}
           alt={post.briefText}
         />
       </div>
