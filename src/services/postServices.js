@@ -1,33 +1,29 @@
 import http from "./httpService";
 
+
 export async function getPostSlug(slug) {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/post/slug/${slug}`
-    );
-    const { data } = await res.json();
-    return data?.post || null;
-  } catch (err) {
-    console.error("getPostSlug error:", err);
-    return null;
-  }
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/post/slug/${slug}`
+  );
+  const { data } = await res.json();
+  const { post } = data || {};
+  return post;
 }
 
-export async function getPosts(queries = "", options) {
-  try {
-    const { data } = await http
-      .get(`/post/list?${queries}`, options)
-      .then((res) => res.data);
+export async function getPosts(queries, options) {
+  // ARTIFICIALLY DELAY A REPONSE FOR DEMO PURPOSES
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    return {
-      posts: data?.posts || [],
-      totalPages: data?.totalPages || 0,
-    };
-  } catch (err) {
-    console.error("getPosts error:", err);
-    return { posts: [], totalPages: 0 };
-  }
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/post/list?${queries}`,
+    options
+  );
+  const { data } = await res.json();
+  const { posts, totalPages } = data || {};
+  return { posts, totalPages };
 }
+
+
 
 export async function likePostApi(postId) {
   return http.post(`/post/like/${postId}`).then(({ data }) => data.data);
