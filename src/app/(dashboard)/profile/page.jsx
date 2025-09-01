@@ -1,12 +1,9 @@
-import SpinnerMini from "@/ui/SpinnerMini";
+import Fallback from "@/ui/Fallback";
 import { Suspense } from "react";
 import CardWrapper from "./_components/CardWrapper";
 import LatestPost from "./_components/LatestPost";
-import Fallback from "@/ui/Fallback";
 
 async function Profile() {
-  
-
   return (
     <div>
       <h1 className="text-xl mb-8 text-secondary-700">Dashboard</h1>

@@ -26,6 +26,7 @@ function PostInterAction({ post }) {
     try {
       const { message } = await likePostApi(postId);
       toast.success(message);
+      console.log(post)
       router.refresh();
     } catch (error) {
       toast.error(error?.response?.data?.message);
