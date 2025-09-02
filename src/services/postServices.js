@@ -15,7 +15,7 @@ export async function getPosts(queries, options) {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/post/list?${queries}`,
+    `https://blog-app-backend-29rf.onrender.com/api/post/list?${queries}`,
     options
   );
   const { data } = await res.json();
