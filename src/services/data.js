@@ -2,7 +2,7 @@ import { setCookieOnReq } from "@/utils/setCookieOnReq";
 import { cookies } from "next/headers";
 import { getAllCommentsApi } from "./commentService";
 import { getAllUsers } from "./authService";
-import { getPosts } from "./postServices";
+import { getPosts } from "./postServices.server";
 
 export async function fetchAllData() {
   const cookieStore = cookies();

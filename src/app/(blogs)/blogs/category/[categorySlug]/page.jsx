@@ -1,4 +1,4 @@
-import { getPosts } from "@/services/postServices";
+import { getPosts } from "@/services/postServices.server";
 import { setCookieOnReq } from "@/utils/setCookieOnReq";
 import { cookies } from "next/headers";
 import Link from "next/link";

@@ -1,8 +1,11 @@
 import Link from "next/link";
-import { serverFetch } from "@/utils/serverFetch";
+import { headers } from "next/headers";
+import { serverFetchWithCookies } from "@/utils/fetchWithCookies";
 
 async function CategoryList() {
-  const res = await serverFetch(`${process.env.NEXT_PUBLIC_BASE_URL}/category/list`);
+  const headersList = headers();
+  const cookie = headersList.get("cookie");
+  const res = await serverFetchWithCookies(`${process.env.NEXT_PUBLIC_BASE_URL}/category/list`, {}, cookie);
   const {
     data: { categories },
   } = await res.json();

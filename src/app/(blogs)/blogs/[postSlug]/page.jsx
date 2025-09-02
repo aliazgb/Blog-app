@@ -1,4 +1,4 @@
-import { getPostSlug, getPosts } from "@/services/postServices";
+import { getPostSlug, getPosts } from "@/services/postServices.server";
 import Image from "next/image";
 import RelatedPosts from "../_components/RelatedPosts";
 import PostComment from "../_components/comment/PostComment";

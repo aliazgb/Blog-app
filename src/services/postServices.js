@@ -1,28 +1,7 @@
 import http from "./httpService";
-import { serverFetch } from "@/utils/serverFetch";
 
-
-export async function getPostSlug(slug) {
-  const res = await serverFetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/post/slug/${slug}`
-  );
-  const { data } = await res.json();
-  const { post } = data || {};
-  return post;
-}
-
-export async function getPosts(queries, options) {
-  // ARTIFICIALLY DELAY A REPONSE FOR DEMO PURPOSES
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  const res = await serverFetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/post/list?${queries}`,
-    options
-  );
-  const { data } = await res.json();
-  const { posts, totalPages } = data || {};
-  return { posts, totalPages };
-}
+// These functions are for client-side usage only
+// For server-side, use postServices.server.js
 
 
 

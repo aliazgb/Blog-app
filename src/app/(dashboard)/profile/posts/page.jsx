@@ -1,4 +1,4 @@
-import { getPosts } from "@/services/postServices";
+import { getPosts } from "@/services/postServices.server";
 import Fallback from "@/ui/Fallback";
 import Search from "@/ui/Search";
 import queryString from "query-string";

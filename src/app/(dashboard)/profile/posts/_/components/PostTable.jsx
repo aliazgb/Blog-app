@@ -1,4 +1,4 @@
-import { getPosts } from "@/services/postServices";
+import { getPosts } from "@/services/postServices.server";
 import Table from "@/ui/Table";
 import TableRow from "./PostRow";
 
