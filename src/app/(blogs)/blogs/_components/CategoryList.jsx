@@ -1,7 +1,8 @@
 import Link from "next/link";
+import { serverFetch } from "@/utils/serverFetch";
 
 async function CategoryList() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/category/list`);
+  const res = await serverFetch(`${process.env.NEXT_PUBLIC_BASE_URL}/category/list`);
   const {
     data: { categories },
   } = await res.json();

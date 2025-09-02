@@ -1,8 +1,9 @@
 import http from "./httpService";
+import { serverFetch } from "@/utils/serverFetch";
 
 
 export async function getPostSlug(slug) {
-  const res = await fetch(
+  const res = await serverFetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/post/slug/${slug}`
   );
   const { data } = await res.json();
@@ -14,7 +15,7 @@ export async function getPosts(queries, options) {
   // ARTIFICIALLY DELAY A REPONSE FOR DEMO PURPOSES
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  const res = await fetch(
+  const res = await serverFetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/post/list?${queries}`,
     options
   );
