@@ -1,7 +1,7 @@
 const { default: axios } = require("axios");
 
 const app = axios.create({
-  baseURL: "https://api.blog-app.online",
+  baseURL: "api.blog-app.online",
   withCredentials: true,
 });
 
@@ -30,7 +30,7 @@ app.interceptors.response.use(
       originalConfig._retry = true;
       try {
         const { data } = await axios.get(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/user/refresh-token`,
+          `api.blog-app.online/user/refresh-token`,
           {
             withCredentials: true,
           }
