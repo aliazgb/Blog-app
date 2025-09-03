@@ -15,7 +15,7 @@ export async function getPosts(queries, options) {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   const res = await fetch(
-    `https://blog-app-backend-29rf.onrender.com/api/post/list?${queries}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/post/list?${queries}`,
     options
   );
   const { data } = await res.json();
@@ -28,11 +28,10 @@ export async function getPosts(queries, options) {
 export async function likePostApi(postId) {
   try {
     const { data } = await http.post(`/post/like/${postId}`, null, {
-      withCredentials: true, // حتماً برای ارسال کوکی
+      withCredentials: true, 
     });
     return data.data;
   } catch (error) {
-    // خطاهای سرور رو درست برگردون
     throw error.response?.data || { message: "Server error" };
   }
 }
