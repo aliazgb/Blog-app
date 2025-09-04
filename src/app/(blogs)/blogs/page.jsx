@@ -12,7 +12,7 @@ async function Page({ searchParams }) {
   const options = setCookieOnReq(cookieStore);
 
   const { posts, totalPages } = await getPosts(queries, options);
-
+    
   const { search } =await searchParams || {}
   const resultsText = posts.length > 1 ? "results" : "result";
 
