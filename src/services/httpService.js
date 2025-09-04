@@ -1,7 +1,7 @@
 const { default: axios } = require("axios");
 
 const app = axios.create({
-  baseURL: "https://blog-app-backend-1-4txe.onrender.com/api",
+  baseURL: "https://api.blog-app.online/api",
   withCredentials: true,
 });
 
