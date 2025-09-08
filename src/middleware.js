@@ -4,19 +4,21 @@ import { NextResponse } from "next/server";
 export async function middleware(req) {
   const { pathname } = req.nextUrl;
 
+  if (process.env.NEXT_PUBLIC_DISABLE_AUTH_MIDDLEWARE === "true") {
+    return;
+  }
+
   if (pathname.startsWith("/profile")) {
     const user = await middlewareAuth(req);
     if (!user) return NextResponse.redirect(new URL(`/signin`, req.nextUrl));
   }
 
-  if (pathname.startsWith("/signin")||pathname.startsWith("/signup")) {
-    const user = await middlewareAuth(req);
-    if (user) return NextResponse.redirect(new URL(`/`, req.nextUrl));
-  }
-  
+  // if (pathname.startsWith("/signin")||pathname.startsWith("/signup")) {
+  //   const user = await middlewareAuth(req);
+  //   if (user) return NextResponse.redirect(new URL(`/`, req.nextUrl));
+  // }
 }
 
-
 export const config = {
-  matcher: ["/profile/:path*", "/signin" ,"/signup"],
+  matcher: ["/profile/:path*", "/signin", "/signup"],
 };

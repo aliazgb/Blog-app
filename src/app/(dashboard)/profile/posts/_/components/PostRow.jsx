@@ -22,7 +22,7 @@ function TableRow({ posts, index }) {
       <td>{index + 1}</td>
       <td>{title}</td>
       <td>{category.title}</td>
-      <td>{author.name}</td>
+      <td>{author?.name}</td>
       <td>{date}</td>
       <td>
         <span className={`badge ${typeStyle[type].className}`}>

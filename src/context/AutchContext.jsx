@@ -54,7 +54,7 @@ export default function AuthProvider({ children }) {
       const { user, message } = await signinApi(values);
       dispatch({ type: "signin", payload: user });
       toast.success(message);
-      router.push("/blogs");
+      window.location.href = "/profile";
     } catch (error) {
       const msg = error?.response?.data?.message;
       dispatch({ type: "rejected", payload: msg });
@@ -83,7 +83,7 @@ export default function AuthProvider({ children }) {
       dispatch({ type: "user/loaded", payload: user });
       router.push("/profile");
     } catch (error) {
-      const msg = error?.response?.data?.message;
+      const msg = "Please Login"
       dispatch({ type: "rejected", payload: msg });
       toast.error(msg);
     }

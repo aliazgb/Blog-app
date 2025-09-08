@@ -17,7 +17,7 @@ export async function fetchAllData() {
 
     const numberOfComments = data[0].commentsCount ?? "0";
     const numberOfUsers = data[1].users.length ?? "0";
-    const numberOfPosts = data[2].length ?? "0";
+    const numberOfPosts = data[2].posts.length ?? "0";
     return {
       numberOfComments,
       numberOfUsers,

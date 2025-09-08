@@ -2,31 +2,48 @@
 
 import ButtonIcon from "@/ui/ButtonIcon";
 
-import { likePostApi } from "@/services/postServices";
 import {
   BookmarkIcon,
   ChatBubbleOvalLeftEllipsisIcon,
   HeartIcon,
 } from "@heroicons/react/24/outline";
-
-import { HeartIcon as SolidHeartIcon } from "@heroicons/react/24/solid";
+import {
+  BookmarkIcon as SolidBookmarkIcon,
+  HeartIcon as SolidHeartIcon,
+} from "@heroicons/react/24/solid";
 
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Author from "./Author";
+import { bookmarkPostApi, likePostApi } from "@/services/postServices";
 
 function PostInterAction({ post }) {
   const router = useRouter();
+
+
+
   const handleLikePost = async (postId) => {
     try {
       const { message } = await likePostApi(postId);
       toast.success(message);
+      console.log(post)
       router.refresh();
     } catch (error) {
-      toast.error(error?.response?.data?.message)
+      toast.error(error?.response?.data?.message);
     }
   };
 
+
+
+  const bookmarkHandler = async (postId) => {
+    try {
+      const { message } = await bookmarkPostApi(postId);
+      toast.success(message);
+      router.refresh();
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    }
+  };
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-x-4">
@@ -37,12 +54,12 @@ function PostInterAction({ post }) {
         <ButtonIcon variant={"red"} onClick={() => handleLikePost(post._id)}>
           {post.isLiked ? <SolidHeartIcon /> : <HeartIcon />}
         </ButtonIcon>
-        <ButtonIcon variant={"primary"}>
-          <BookmarkIcon />
+        <ButtonIcon variant="primary" onClick={() => bookmarkHandler(post._id)}>
+          {post.isBookmarked ? <SolidBookmarkIcon /> : <BookmarkIcon />}
         </ButtonIcon>
       </div>
       <div className="flex items-center">
-        <span className="text-sm text-secondary-500">{post.author.name}</span>
+        <span className="text-sm text-secondary-500">{post?.author?.name}</span>
         <Author {...post} />
       </div>
     </div>

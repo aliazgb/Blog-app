@@ -10,7 +10,6 @@ import Pagination from "@/ui/Pagination";
 async function page({ searchParams }) {
   const queries = queryString.stringify(searchParams);
   const { totalPages } = await getPosts(queries);
-  // console.log(totalPages);
   return (
     <div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 text-secondary-700 mb-12 items-center">

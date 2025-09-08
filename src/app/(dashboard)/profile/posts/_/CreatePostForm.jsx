@@ -7,43 +7,31 @@ import FileInput from "@/ui/FileInput";
 import RHFSelect from "@/ui/RHFSelect";
 import RHFTextField from "@/ui/RHFTextField";
 import SpinnerMini from "@/ui/SpinnerMini";
-import { imageUrlToFile } from "@/utils/fileFormater";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import imageCompression from "browser-image-compression";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import useCreatePost from "../create/_/useCreatePost";
 import useEditPost from "../create/_/useEditPost";
+import { uploadToCloudinary } from "@/services/uploadService";
 
 function CreatePostForm({ postEdit = {} }) {
   const { _id: editId } = postEdit;
   const isEditSession = Boolean(editId);
-  const { isEditing, editPost } = useEditPost();
+  const { editPost, isEditing } = useEditPost();
+
   const schema = yup
     .object({
-      title: yup
-        .string()
-        .min(5, "Enter at least 5 characters")
-        .required("Title is required"),
-      briefText: yup
-        .string()
-        .min(10, "Enter at least 10 characters")
-        .required("Short description is required"),
-      text: yup
-        .string()
-        .min(10, "Enter at least 10 characters")
-        .required("Description is required"),
-      slug: yup.string().required("Slug is required"),
-      readingTime: yup
-        .number()
-        .positive()
-        .integer()
-        .required("Reading time is required")
-        .typeError("Please enter a valid number"),
-      category: yup.string().required("Category is required"),
+      title: yup.string().min(5).required(),
+      briefText: yup.string().min(10).required(),
+      text: yup.string().min(10).required(),
+      slug: yup.string().required(),
+      readingTime: yup.number().positive().integer().required(),
+      category: yup.string().required(),
     })
     .required();
 
@@ -54,30 +42,21 @@ function CreatePostForm({ postEdit = {} }) {
     briefText,
     readingTime,
     category,
-    coverImage,
-    coverImageUrl: prevCoverImage,
+    coverImage: prevCoverImage,
   } = postEdit;
 
-  let editValue = {};
-  if (isEditSession) {
-    editValue = {
-      title,
-      text,
-      slug,
-      briefText,
-      readingTime,
-      category: category._id,
-      coverImage,
-    };
-  }
-  const [imageUrl, setImageUrl] = useState(null || prevCoverImage);
+  const editValue = isEditSession
+    ? { title, text, slug, briefText, readingTime, category: category._id }
+    : {};
+
+  const [imageUrl, setImageUrl] = useState(prevCoverImage || null);
+  const [isCompressing, setIsCompressing] = useState(false);
   const { createPost, isCreating } = useCreatePost();
   const router = useRouter();
   const {
     control,
     formState: { errors },
     handleSubmit,
-    reset,
     setValue,
     register,
   } = useForm({
@@ -85,38 +64,47 @@ function CreatePostForm({ postEdit = {} }) {
     resolver: yupResolver(schema),
     defaultValues: editValue,
   });
+
   const { transformedCategories: categories } = useCategories();
 
-  useEffect(() => {
-    if (prevCoverImage) {
-      async function fetchMyApi() {
-        const file = await imageUrlToFile(prevCoverImage);
-        setValue("coverImage", file);
+  const onSubmit = async (data) => {
+    if (data.coverImage instanceof File) {
+      setIsCompressing(true);
+      try {
+        const compressedFile = await imageCompression(data.coverImage, {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1920,
+          useWebWorker: true,
+        });
+        const uploadedUrl = await uploadToCloudinary(compressedFile);
+        data.coverImage = uploadedUrl;
+      } catch (err) {
+        console.error("Error compressing/uploading image:", err);
+        setIsCompressing(false);
+        return;
       }
-      fetchMyApi();
+      setIsCompressing(false);
     }
-  }, [editId]);
 
-  const onSubmit = (data) => {
     const formData = new FormData();
-    for (const key in data) {
-      formData.append(key, data[key]);
-    }
+    formData.append("title", data.title);
+    formData.append("briefText", data.briefText);
+    formData.append("text", data.text);
+    formData.append("slug", data.slug);
+    formData.append("readingTime", data.readingTime.toString());
+    formData.append("category", data.category);
+    if (data.coverImage) formData.append("coverImage", data.coverImage);
+
     if (isEditSession) {
       editPost(
         { id: editId, data: formData },
-        {
-          onSuccess: () => router.push("/profile/posts"),
-        }
+        { onSuccess: () => router.push("/profile/posts") }
       );
     } else {
-      createPost(formData, {
-        onSuccess: () => {
-          router.push("/profile/posts");
-        },
-      });
+      createPost(formData, { onSuccess: () => router.push("/profile/posts") });
     }
   };
+
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <RHFTextField
@@ -140,7 +128,6 @@ function CreatePostForm({ postEdit = {} }) {
         errors={errors}
         isRequired
       />
-
       <RHFTextField
         label="slug"
         name="slug"
@@ -167,28 +154,27 @@ function CreatePostForm({ postEdit = {} }) {
         name="coverImage"
         rules={{ required: "*" }}
         control={control}
-        render={({ field: { onChange, value, ...rest } }) => {
-          return (
-            <FileInput
-              {...rest}
-              label="coverImage"
-              value={value?.fileName}
-              onChange={(e) => {
-                const file = e.target.files[0];
-                setImageUrl(URL.createObjectURL(file));
-                onChange(file);
-                e.target.value = null;
-              }}
-            />
-          );
-        }}
+        render={({ field: { onChange, value, ...rest } }) => (
+          <FileInput
+            {...rest}
+            label="coverImage"
+            value={value?.fileName}
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (!file) return;
+              setImageUrl(URL.createObjectURL(file)); 
+              onChange(file);  
+              e.target.value = null;
+            }}
+          />
+        )}
       />
 
       {imageUrl && (
         <div className="relative aspect-video overflow-hidden rounded-lg">
           <Image
             fill
-            alt="cover-iamge"
+            alt="cover-image"
             src={imageUrl}
             className="object-cover object-center"
           />
@@ -204,8 +190,9 @@ function CreatePostForm({ postEdit = {} }) {
           </ButtonIcon>
         </div>
       )}
+
       <div>
-        {isCreating ? (
+        {(isCreating || isCompressing) ? (
           <SpinnerMini />
         ) : (
           <Button variant="primary" type="submit" className="w-full">

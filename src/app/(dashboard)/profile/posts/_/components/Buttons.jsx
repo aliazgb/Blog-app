@@ -37,7 +37,7 @@ export function DeletePost({ post: { title, _id: id } }) {
           onConfirm={(e) => {
             e.preventDefault();
             setOpen(false);
-            deletePost(id, { onSuccess: router.refresh() });
+            deletePost(id, { onSuccess: () => router.refresh() });
           }}
         />
       </Modal>

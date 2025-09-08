@@ -3,6 +3,7 @@ import Button from "@/ui/Button";
 import Link from "next/link";
 
 function Home() {
+  
   return (
     <main
       className="relative min-h-screen bg-cover bg-center bg-no-repeat"

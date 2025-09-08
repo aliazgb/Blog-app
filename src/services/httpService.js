@@ -1,9 +1,21 @@
-import axios from "axios";
+const { default: axios } = require("axios");
 
 const app = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+  baseURL: "https://api.blog-app.online/api",
   withCredentials: true,
 });
+
+// accessToken => jwt => national-id => unique !  => user id => jwt => localStorage , cookie
+// http only => no access on browser (js) => safe =>
+// =>  id = 1234566 => jwt => AFDSFSLKAQTEWRLDAKSJFEQRERQWLRKJ3434DFSDF => COOKIES =>
+
+// accessToken => 24 hrs =>
+// refreshToken => 30 days =>
+
+// 1. => access : OK => continue ...
+// 2. => access : EXPIRE => 1. log out =>  ...  2. login => HOW ?? =>
+//  based on refreshToken => create new accessToken => 24 hrs , 30 days => ...continue ...
+// 3. refresh : EXPIRES => new login =>
 
 app.interceptors.request.use(
   (res) => res,
@@ -18,8 +30,10 @@ app.interceptors.response.use(
       originalConfig._retry = true;
       try {
         const { data } = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/user/refresh-token`,
-          { withCredentials: true }
+          `${process.env.NEXT_PUBLIC_BASE_URL}/user/refresh-token`,
+          {
+            withCredentials: true,
+          }
         );
         if (data) return app(originalConfig);
       } catch (error) {
@@ -32,9 +46,10 @@ app.interceptors.response.use(
 
 const http = {
   get: app.get,
-  post: app.post,
   patch: app.patch,
-  delete: app.delete,
   put: app.put,
+  delete: app.delete,
+  post: app.post,
 };
+
 export default http;

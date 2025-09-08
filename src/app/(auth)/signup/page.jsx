@@ -37,7 +37,7 @@ function Signup() {
   return (
     <FormUi>
       <div>
-        <h1 className="text-secondary-500 text-center mb-6 text-xl font-bold">
+        <h1 className="text-secondary-900 text-center mb-6 text-xl font-bold">
           Signup
         </h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
@@ -56,7 +56,7 @@ function Signup() {
           />
           <div className="mt-6">
        
-              <Button className="w-full" variant="primary" type="submit">
+              <Button className="w-full" type="submit">
                 Confirm
               </Button>
             
