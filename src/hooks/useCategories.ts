@@ -6,16 +6,18 @@ export function useCategories(): {
   transformedCategories: { label: string; value: string }[];
   isLoading: boolean;
 } {
-  const { data, isLoading } = useQuery<Category[]>({
+  const { data, isLoading } = useQuery<any[]>({
     queryKey: ["category"],
     queryFn: getCategoryApi,
   });
-  // const { categories = [] } = data || {};
-  const categories = data || [];
+
+  const categories: Category[] = data || [];
+
 
   const transformedCategories = categories.map((item) => ({
     label: item.title,
     value: item._id,
   }));
+
   return { transformedCategories, isLoading };
 }

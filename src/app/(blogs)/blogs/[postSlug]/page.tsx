@@ -1,10 +1,11 @@
 import { getPostSlug, getPosts } from "@/services/postServices";
 import Image from "next/image";
+import { JSX } from "react";
+import { Post} from "types/ApiTypes";
 import RelatedPosts from "../_components/RelatedPosts";
 import PostComment from "../_components/comment/PostComment";
 import NotFound from "./not-found";
-import { JSX } from "react";
-import { GetPostSlugResponse, Post } from "types/ApiTypes";
+import MoveBack from "@/ui/MoveBack";
 
 interface SinglePostProps {
   params: Promise<{ postSlug: string }>;
@@ -20,8 +21,7 @@ interface SinglePostProps {
 
 export async function generateMetadata({ params }: SinglePostProps) {
   const { postSlug } = await params;
-  const response: GetPostSlugResponse = await getPostSlug(postSlug);
-  const post = response.post;
+  const post: Post = await getPostSlug(postSlug);
 
   return {
     title: post ? `${post.title}` : "Post not found",
@@ -37,17 +37,18 @@ export async function generateStaticParams() {
 async function SinglePost({ params }: SinglePostProps): Promise<JSX.Element> {
   // const post = await getPostSlug(params.postSlug);
   const { postSlug } = await params;
-  const response: GetPostSlugResponse = await getPostSlug(postSlug);
-  console.log(response)
-  const post: Post | null = response.post;
+  const post: Post = await getPostSlug(postSlug);
+
 
   if (!post) return NotFound();
-
+  console.log(post)
   return (
     <div className="text-secondary-600 max-w-screen-md mx-auto">
+      <MoveBack/>
       <h1 className="text-secondary-700 text-2xl font-bold mb-8">
         {post.title}
       </h1>
+      <h1 className="mb-4">{post.briefText}</h1>
       <p className="mb-8">{post.text}</p>
       <div className="relative aspect-video overflow-hidden rounded-lg mb-10">
         <Image

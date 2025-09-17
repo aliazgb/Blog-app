@@ -3,8 +3,8 @@ import Pagination from "@/ui/Pagination";
 import { setCookieOnReq } from "@/utils/setCookieOnReq";
 import { cookies } from "next/headers";
 import queryString from "query-string";
-import PostList from "./_components/PostList";
 import { JSX } from "react";
+import PostList from "./_components/PostList";
 
 interface BlogsPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;

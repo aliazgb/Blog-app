@@ -16,7 +16,7 @@ async function PostList({
       {posts.map((post) => (
         <div
           className="col-span-12 sm:col-span-6 lg:col-span-4 border border-secondary-300 shadow-md p-2 rounded-lg
-          hover:shadow-[0_8px_30px_rgba(139,92,246,0.5)] transition-all duration-300
+          hover:shadow-[0_8px_30px_rgba(139,92,246,0.5)] transition-all duration-300 items-start relative
           "
           key={post._id}
         >
@@ -26,7 +26,7 @@ async function PostList({
               <h2 className="my-2 font-bold text-secondary-700 hover:text-primary-900 transition-all ease-out">
                 {post.title}
               </h2>
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between ">
                 {/* <Author {...post.author} /> */}
                 <div className="flex items-center text-[12px] text-secondary-500">
                   <ClockIcon className="w-4 h-4 stroke-secondary-500 mr-1" />
@@ -35,8 +35,10 @@ async function PostList({
                 </div>
               </div>
             </div>
+            
           </Link>
           <PostInterAction post={post} />
+          
         </div>
       ))}
       {showPagination && (

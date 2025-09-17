@@ -29,11 +29,11 @@ function SideBar({ onClose }: SideBarProps) {
       {/* Drawer header */}
       <div className="flex items-center  justify-between w-full   mb-5 pb-2 border-b-secondary-200 ">
         <Link
-          href="/"
+          href="/blogs"
           className="flex items-center gap-x-2 px-3  text-secondary-700  lg:flex-1"
         >
           <HomeIcon className="w-6 h-6" />
-          <span> next-blog</span>
+          <span> Blogs</span>
         </Link>
         <ButtonIcon
           onClick={onClose}

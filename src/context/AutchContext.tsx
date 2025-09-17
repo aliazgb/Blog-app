@@ -78,19 +78,21 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   async function Signin(values: SignupInput): Promise<void> {
     dispatch({ type: "loading" });
     try {
-      const { user, message }: { user: User; message: string } =
-        await signinApi(values);
+      const { user, message }: { user: User; message: string } = await signinApi(values);
       dispatch({ type: "signin", payload: user });
       toast.success(message);
-      router.push("/blogs");
+  
+      window.location.href = "/profile";
     } catch (err) {
-      // const msg = error?.response?.data?.message;
       const error = err as { response?: { data?: { message?: string } } };
       const msg = error.response?.data?.message || "Signin failed";
       dispatch({ type: "rejected", payload: msg });
       toast.error(msg);
     }
   }
+  
+  
+  
 
   async function Signup(values: SignupInput): Promise<void> {
     dispatch({ type: "loading" });
@@ -114,13 +116,13 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const { user }: { user: User } = await getUserApi();
       dispatch({ type: "user/loaded", payload: user });
-      router.push("/profile");
     } catch (error) {
       const msg = "Please Login";
       dispatch({ type: "rejected", payload: msg });
-      toast.error(msg);
+      toast.error(msg);  
     }
   }
+  
   async function logout(): Promise<void> {
     try {
       await logoutApi();

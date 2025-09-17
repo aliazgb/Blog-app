@@ -13,14 +13,14 @@ export function DarkModeProvier({ children }: { children: ReactNode }) {
     "isDarkMoode",
     typeof window !== "undefined"
       ? window.matchMedia("(prefers-color-scheme: dark)").matches
-      : false
+      : true
   );
 
   const toggleDarkMode = () => setIsDarkMode((prev: boolean) => !prev);
 
   useEffect(() => {
     if (typeof document !== "undefined") {
-      if (!isDarkMode) {
+      if (isDarkMode) {
         document.documentElement.classList.add("light-mode");
         document.documentElement.classList.remove("dark-mode");
       } else {

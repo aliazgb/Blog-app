@@ -39,14 +39,14 @@ export interface ActionResponse {
   message: string;
 }
 
-export interface GetPostSlugResponse {
-  post: Post | null;
-}
+// export interface GetPostSlugResponse {
+//   post: Post ;
+// }
 
 
-export interface Category {
-  title: string;
-}
+// export interface Category {
+//   title: string;
+// }
 
 export interface Post {
   _id: string;
@@ -208,7 +208,6 @@ export interface Category {
   slug: string;
   createdAt: string;
   updatedAt?: string;
-  categories: Category[]
 }
 
 

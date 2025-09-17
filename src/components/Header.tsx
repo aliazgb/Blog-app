@@ -40,7 +40,7 @@ function Header(): JSX.Element {
       className={`z-10 shadow-md backdrop-blur-sm mb-10 sticky top-0 
       transition-all duration-200 border-b border-b-secondary-300 bg-white/80
       text-sm sm:text-lg
-      ${isDarkMode ? "!bg-gray-700/40 backdrop-blur-xl" : ""}
+      ${!isDarkMode ? "!bg-gray-700/40 backdrop-blur-xl" : ""}
     `}
     >
       <nav className="container xl:max-w-screen-xl">

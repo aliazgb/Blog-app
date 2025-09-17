@@ -12,13 +12,13 @@ import {
   HeartIcon as SolidHeartIcon,
 } from "@heroicons/react/24/solid";
 
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-import Author from "./Author";
 import { bookmarkPostApi, likePostApi } from "@/services/postServices";
-import { JSX } from "react";
 import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
+import { JSX } from "react";
+import toast from "react-hot-toast";
 import { PostListType } from "types/ApiTypes";
+import Author from "./Author";
 
 interface PostInteractionProps {
   post: PostListType;
@@ -70,7 +70,6 @@ function PostInterAction({ post }: PostInteractionProps): JSX.Element {
         <Author
           // {...post}
           name={post.author.name}
-          avatarUrl={post.author.avatarUrl}
         />
       </div>
     </div>
