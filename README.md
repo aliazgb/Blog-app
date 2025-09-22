@@ -1,3 +1,6 @@
+A full-stack blog application built with Next.js, TypeScript, Tailwind CSS, and MongoDB, featuring authentication, blog management, comments, and a user dashboard.
+
+
 ✨ Features
 
 🔐 Authentication
